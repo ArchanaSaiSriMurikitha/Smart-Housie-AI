@@ -39,11 +39,18 @@ function uid() { return Math.random().toString(36).slice(2, 10); }
 
 function speak(text: string, on: boolean) {
   if (!on || typeof window === "undefined" || !window.speechSynthesis) return;
+
   try {
+    // Clear any previous queued speech
+    window.speechSynthesis.cancel();
+
     const u = new SpeechSynthesisUtterance(text);
     u.rate = 0.95;
+
     window.speechSynthesis.speak(u);
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 const STORAGE_KEY = "housie:session";
